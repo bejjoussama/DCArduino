@@ -13,12 +13,13 @@ int potVal = 0; //Définition d'une variable pour stocker la valeur du potentiom
 int button = 0;     //Définition d'une variable pour stocker la valeur du bouton poussoir.
 int prevButton = 0; //Variable qui enregistre le dernier état du bouton poussoir.
 
-int DC = 0; // Variable qui enregistre l'etat du moteur.
+char DC[7] = "ARRET";
 
 void setup()
 {
     pinMode(onoff, INPUT);
     pinMode(motor, OUTPUT);
+    Serial.begin(9600);
 }
 
 void loop()
@@ -27,21 +28,34 @@ void loop()
     button = digitalRead(onoff);                   // Permet de lire l'etat du bouton poussoir.
 
     /* 
-        Ecrire une fonction qui sert à mémoriser l'état précèdent du moteur et le basculer quand on appuie sur le bouton poussoir.
+        Ecrire une fonction qui sert à mémoriser l'état du moteur et le basculer quand on appuie sur le bouton poussoir.
     */
-    if ((button == HIGH) && (prevButton == LOW))
+    if (digitalRead(onoff) == HIGH)
     {
-        DC = 1 - DC;
+        if (prevButton == 0)
+        {
+            prevButton = 1;
+            analogWrite(motor, potVal);
+        }
+        else
+        {
+            prevButton = 0;
+            analogWrite(motor, 0);
+        }
     }
+
     /*
-        Si la valeur DC est égale à 1 le moteur se met en marche sinon le moteur est arrêté.
+        Ecrire sur le moniteur serie l'etat du moteur.
     */
-    if (DC == 1)
+    Serial.print("%_moteur: ");
+    Serial.print((potVal * 100) / 255);
+    Serial.print(" ,Etat moteur: ");
+    if (prevButton == 1)
     {
-        analogWrite(motor, potVal); // la fonction analogWrite permet de generer un signal pwm sur le pin 9 à tension variable selon la valeur de la variable potVal.
+        Serial.println("Marche");
     }
     else
     {
-        digitalWrite(motor, LOW);
+        Serial.println("Arret");
     }
 }

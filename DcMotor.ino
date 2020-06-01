@@ -13,8 +13,6 @@ int potVal = 0; //Définition d'une variable pour stocker la valeur du potentiom
 int button = 0;     //Définition d'une variable pour stocker la valeur du bouton poussoir.
 int prevButton = 0; //Variable qui enregistre le dernier état du bouton poussoir.
 
-char DC[7] = "ARRET";
-
 void setup()
 {
     pinMode(onoff, INPUT);

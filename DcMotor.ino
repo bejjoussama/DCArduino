@@ -7,7 +7,7 @@ Pin A0: Capture la tension entrante du potentiomètre.
 int onoff = 2;
 int motor = 9;
 int pot = A0;
-
+int DC = 0;
 int potVal = 0; //Définition d'une variable pour stocker la valeur du potentiomètre.
 
 int button = 0;     //Définition d'une variable pour stocker la valeur du bouton poussoir.
@@ -33,13 +33,21 @@ void loop()
         if (prevButton == 0)
         {
             prevButton = 1;
-            analogWrite(motor, potVal);
+            DC = 1;
         }
         else
         {
             prevButton = 0;
-            analogWrite(motor, 0);
+            DC = 0;
         }
+    }
+    if (DC == 1)
+    {
+        analogWrite(motor, potVal);
+    }
+    else
+    {
+        analogWrite(motor, 0);
     }
 
     /*
